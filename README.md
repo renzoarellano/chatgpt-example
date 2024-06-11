@@ -1,16 +1,6 @@
 # ChatGPT UI Clone
 
-A clone of the ChatGPT website UI
-demo: https://wesleymaik.github.io/chatgpt-ui-clone
-
 ---
-
-<div align="center">
-
-![screenshot-web](./docs/screenshot-1.png)
-![screenshot-mobile](./docs/screenshot-2.png)
-
-## </div>
 
 ## Requirements
 
@@ -30,7 +20,7 @@ demo: https://wesleymaik.github.io/chatgpt-ui-clone
 1. Clone the project
 
 ```
-git clone https://github.com/WesleyMaik/chatgpt-ui-clone
+git clone https://github.com/renzoarellano/chatgpt-example
 ```
 
 2. Install dependencies
