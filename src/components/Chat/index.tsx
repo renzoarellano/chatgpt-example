@@ -7,7 +7,6 @@ import { useChat } from "@/store/chat";
 import { useForm } from "react-hook-form";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useMutation } from "react-query";
-import utf8 from "utf8";
 
 //Components
 import { Input } from "@/components/Input";
@@ -59,21 +58,6 @@ export const Chat = ({ ...props }: ChatProps) => {
       }
     },
   });
-
-  const gettingAnswer = async ({ input: prompt }: ChatSchema) => {
-    try {
-      if (api) {
-        const response = await fetch(api, {
-          method: "post",
-          body: `{ "prompt": "${prompt}" }`,
-        });
-        const data = await response.json();
-        console.log("Testing BETSYGPT", data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleAsk = async ({ input: prompt }: ChatSchema) => {
     updateScroll();
@@ -177,9 +161,13 @@ export const Chat = ({ ...props }: ChatProps) => {
                     whiteSpace="pre-wrap"
                     marginTop=".75em !important"
                     overflow="hidden"
-                  >
-                    {decodeUnicode(message)}
-                  </Text>
+                    dangerouslySetInnerHTML={{
+                      __html: decodeUnicode(message).replace(
+                        /(?:\r\n|\r|\\n)/g,
+                        "</br>"
+                      ),
+                    }}
+                  ></Text>
                 </Stack>
               );
             })

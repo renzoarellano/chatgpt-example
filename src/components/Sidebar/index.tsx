@@ -74,6 +74,10 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
       }
     : {};
 
+  const gettingChatName = (name: string) => {
+    return name.length > 20 ? name.slice(0, 20).concat("...") : name;
+  };
+
   return (
     <>
       {!!isResponsive && (
@@ -174,7 +178,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
                   backgroundColor: "whiteAlpha.100",
                 }}
               >
-                <Text>{role}</Text>
+                <Text>{gettingChatName(role)}</Text>
                 <Spacer />
                 <FiTrash2
                   className="icon"

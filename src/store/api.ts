@@ -6,7 +6,7 @@ interface UseAPIProps {
 };
 
 const initialApiState = import.meta.env.VITE_API_LINK || "";
-
+console.log("initialApiState",initialApiState)
 export const useAPI = create<UseAPIProps>((set) => ({
     api: initialApiState,
     setAPI: async (key) => set({ api: key })
