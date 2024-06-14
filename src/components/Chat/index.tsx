@@ -79,7 +79,7 @@ export const Chat = ({ ...props }: ChatProps) => {
               message,
             });
 
-            if (selectedRole == "New chat" || selectedRole == undefined) {
+            if (selectedRole == "Nueva conversación" || selectedRole == undefined) {
               editChat(selectedId, { role: variable });
             }
           }

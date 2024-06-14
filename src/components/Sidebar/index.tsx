@@ -156,7 +156,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
             backgroundColor: "whiteAlpha.100",
           }}
         >
-          New chat
+          Nueva conversación
         </Button>
         <Stack height="full" overflowY="auto" ref={listRef}>
           {chat?.map(({ id, role }) => {
@@ -203,7 +203,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
               backgroundColor: "blackAlpha.300",
             }}
           >
-            Clear conversations
+            Borrar conversaciones
           </Button>
           <Button
             justifyContent="flex-start"
@@ -215,7 +215,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
               backgroundColor: "blackAlpha.300",
             }}
           >
-            {colorMode == "dark" ? "Light mode" : "Dark mode"}
+            {colorMode == "dark" ? "Modo Claro" : "Modo Oscuro"}
           </Button>
           
         </Stack>

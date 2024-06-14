@@ -39,11 +39,11 @@ const getSafeSavedChats = () => {
 const initialChatState: Chat[] = getSafeSavedChats() || [
     {
         id: '1',
-        role: 'About this website',
+        role: 'Sobre GenIA',
         content: [
             {
                 emitter: "user",
-                message: "¿Para que sirve esta web?"
+                message: "¿Para qué sirve esta web?"
             },
             {
                 emitter: "gpt",
@@ -63,7 +63,7 @@ export const useChat = create<UseChatProps>((set, get) => ({
         if (!hasNewChat) {
             const id = v4()
             get().setChat({
-                role: "New chat",
+                role: "Nueva conversación",
                 id: id,
                 content: []
             });
