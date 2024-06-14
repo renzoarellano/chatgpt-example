@@ -4,7 +4,7 @@ import { FiAlertTriangle, FiSun, FiZap } from "react-icons/fi";
 
 type Introdution = {
   icon: IconType;
-  name: "Examples" | "Capabilities" | "Limitations";
+  name: "Consultar" | "Refinar";
   list: string[];
 };
 
@@ -16,29 +16,18 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
   const introdution: Introdution[] = [
     {
       icon: FiSun,
-      name: "Examples",
+      name: "Consultar",
       list: [
-        "Explain quantum computing in simple terms",
-        "Got any creative ideas for a 10 year old's birthday?",
-        "How do i make an HTTP request in JavaScript?",
+        "¿Cuáles son las normas de seguridad?",
+        "¿Cuáles son los identificativos personales?",
       ],
     },
     {
       icon: FiZap,
-      name: "Capabilities",
+      name: "Refinar",
       list: [
-        "Remembers what user said earlier in the conversation",
-        "Allows user to provide follow-up corrections",
-        "Trained to decline inappropriate requests",
-      ],
-    },
-    {
-      icon: FiAlertTriangle,
-      name: "Limitations",
-      list: [
-        "May occasionally generate incorrect information",
-        "May occasionally produce harmful instructions or biased content",
-        "Limited knowledge of world and events after 2021",
+        "La idea de mi proyecto es la siguiente..",
+        "Quiero implementar tarjeta biométrica en el banco, ¿qué consideraciones debo tener en cuenta?",
       ],
     },
   ];
@@ -51,7 +40,7 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
       overflow="auto"
     >
       <Heading size="lg" marginY={8}>
-        ChatGPT
+        GenIA
       </Heading>
       <Stack direction={["column", "column", "row"]}>
         {introdution.map(({ icon, list, name }, key) => {

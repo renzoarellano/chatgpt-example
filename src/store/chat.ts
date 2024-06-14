@@ -43,7 +43,7 @@ const initialChatState: Chat[] = getSafeSavedChats() || [
         content: [
             {
                 emitter: "user",
-                message: "Para que sirve esta web?"
+                message: "¿Para que sirve esta web?"
             },
             {
                 emitter: "gpt",

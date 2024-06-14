@@ -217,39 +217,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
           >
             {colorMode == "dark" ? "Light mode" : "Dark mode"}
           </Button>
-          <Button
-            leftIcon={<FiExternalLink />}
-            justifyContent="flex-start"
-            padding={2}
-            backgroundColor="transparent"
-            _hover={{
-              backgroundColor: "blackAlpha.300",
-            }}
-          >
-            FAQ
-          </Button>
-          <Button
-            leftIcon={<FiUsers />}
-            justifyContent="flex-start"
-            padding={2}
-            backgroundColor="transparent"
-            _hover={{
-              backgroundColor: "blackAlpha.300",
-            }}
-          >
-            Contacto
-          </Button>
-          <Button
-            leftIcon={<FiLogOut />}
-            justifyContent="flex-start"
-            padding={2}
-            backgroundColor="transparent"
-            _hover={{
-              backgroundColor: "blackAlpha.300",
-            }}
-          >
-            Log Out
-          </Button>
+          
         </Stack>
       </Stack>
       <AccountModal title="Your account">

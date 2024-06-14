@@ -1,5 +1,6 @@
 //Modules
 import gptAvatar from "@/assets/gpt-avatar.svg";
+import robot from "@/assets/robot.png"
 import warning from "@/assets/warning.svg";
 import user from "@/assets/user.png";
 import { useRef } from "react";
@@ -137,7 +138,7 @@ export const Chat = ({ ...props }: ChatProps) => {
               const getAvatar = () => {
                 switch (emitter) {
                   case "gpt":
-                    return gptAvatar;
+                    return robot;
                   case "error":
                     return warning;
                   default:
@@ -205,6 +206,7 @@ export const Chat = ({ ...props }: ChatProps) => {
               }
             }}
           />
+
           <Text textAlign="center" fontSize="sm" opacity={0.5}>
             GenIA powered by BBVA Perú
           </Text>

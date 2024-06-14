@@ -1,4 +1,4 @@
-# ChatGPT UI Clone
+# GenIA
 
 ---
 
@@ -19,9 +19,6 @@
 
 1. Clone the project
 
-```
-git clone https://github.com/renzoarellano/chatgpt-example
-```
 
 2. Install dependencies
 
@@ -40,7 +37,7 @@ yarn install
 
 ```
 //.env
-API_LINK = your own ChatGPT
+API_LINK = your own GenIA
 ```
 
 4. Run 🔥
