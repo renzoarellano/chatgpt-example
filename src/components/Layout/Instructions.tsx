@@ -1,6 +1,7 @@
 import { Stack, Heading, Icon, Button, Text } from "@chakra-ui/react";
 import { IconType } from "react-icons";
 import { FiAlertTriangle, FiSun, FiZap } from "react-icons/fi";
+import { useChat } from "@/store/chat";
 
 type Introdution = {
   icon: IconType;
@@ -13,6 +14,8 @@ export interface IInstructionsProps {
 }
 
 export const Instructions = ({ onClick }: IInstructionsProps) => {
+  const { setQuestion, setQueryPerChat, selectedChat } = useChat();
+  console.log("selectedChatInstruccion", selectedChat);
   const introdution: Introdution[] = [
     {
       icon: FiSun,
@@ -54,7 +57,11 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
                   maxWidth={64}
                   height="fit-content"
                   padding={4}
-                  onClick={() => onClick(text)}
+                  onClick={() => {
+                    onClick(text);
+                    setQuestion(true);
+                    setQueryPerChat(selectedChat.id, "PROJECT REFINEMENT");
+                  }}
                 >
                   <Text overflow="hidden" whiteSpace="normal">
                     {text}

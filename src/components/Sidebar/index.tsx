@@ -44,6 +44,10 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
     handleOpen = () => setIsOpen(true),
     handleClose = () => setIsOpen(false);
 
+  const [sessionId, setsessionId] = useState(
+    sessionStorage.getItem("sessionId")
+  );
+
   const [listRef] = useAutoAnimate();
 
   const { toggleColorMode, colorMode } = useColorMode();
@@ -65,6 +69,15 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
   useEffect(() => {
     store.session("@chat", JSON.stringify(chat));
   }, [chat, selectedChat]);
+
+  useEffect(() => {
+    if (!sessionId) {
+      console.log("sessionId", sessionId);
+      const d = new Date();
+      let ms = d.valueOf();
+      store.session("sessionId", ms);
+    }
+  }, []);
 
   const responsiveProps = isResponsive
     ? {
@@ -197,7 +210,9 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
             leftIcon={<FiTrash2 />}
             justifyContent="flex-start"
             padding={2}
-            onClick={clearAll}
+            onClick={() => {
+              clearAll();
+            }}
             backgroundColor="transparent"
             _hover={{
               backgroundColor: "blackAlpha.300",
@@ -217,7 +232,6 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
           >
             {colorMode == "dark" ? "Modo Claro" : "Modo Oscuro"}
           </Button>
-          
         </Stack>
       </Stack>
       <AccountModal title="Your account">
