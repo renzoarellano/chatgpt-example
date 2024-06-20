@@ -1,8 +1,9 @@
 //Modules
 import gptAvatar from "@/assets/gpt-avatar.svg";
+import robot from "@/assets/robot.png";
 import warning from "@/assets/warning.svg";
 import user from "@/assets/user.png";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useChat } from "@/store/chat";
 import { useForm } from "react-hook-form";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
@@ -10,11 +11,19 @@ import { useMutation } from "react-query";
 
 //Components
 import { Input } from "@/components/Input";
-import { FiSend } from "react-icons/fi";
-import { Avatar, IconButton, Spinner, Stack, Text } from "@chakra-ui/react";
+import { FiSend, FiMail } from "react-icons/fi";
+import {
+  Avatar,
+  IconButton,
+  Spinner,
+  Stack,
+  Text,
+  Button,
+} from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
 import { Instructions } from "../Layout/Instructions";
 import { useAPI } from "@/store/api";
+import { query } from "@/services/query";
 
 export interface ChatProps {}
 
@@ -24,7 +33,14 @@ interface ChatSchema {
 
 export const Chat = ({ ...props }: ChatProps) => {
   const { api } = useAPI();
-  const { selectedChat, addMessage, addChat, editChat } = useChat();
+  const {
+    selectedChat,
+    addMessage,
+    addChat,
+    editChat,
+    setQuestion,
+    isQuestion,
+  } = useChat();
   const selectedId = selectedChat?.id,
     selectedRole = selectedChat?.role;
 
@@ -46,10 +62,11 @@ export const Chat = ({ ...props }: ChatProps) => {
         if (api) {
           const response = await fetch(api, {
             method: "post",
-            body: `{ "prompt": "${prompt}" }`,
+            body: `{ "inputText": "${prompt}",
+           "sessionId": '${sessionStorage.getItem("sessionId")}',
+          "queryType": '${selectedChat.query}'}`,
           });
           const data = await response.json();
-          console.log("data", data);
           return data;
         }
         return;
@@ -78,7 +95,10 @@ export const Chat = ({ ...props }: ChatProps) => {
               message,
             });
 
-            if (selectedRole == "New chat" || selectedRole == undefined) {
+            if (
+              selectedRole == "Nueva conversación" ||
+              selectedRole == undefined
+            ) {
               editChat(selectedId, { role: variable });
             }
           }
@@ -112,7 +132,14 @@ export const Chat = ({ ...props }: ChatProps) => {
         sendRequest(selectedId);
       }
     } else {
-      addChat(sendRequest);
+      console.log("Crear nuevo chat");
+      console.log("isQuestion", isQuestion);
+      if (isQuestion) {
+        addChat(sendRequest, "PROJECT REFINEMENT");
+        setQuestion(false);
+      } else {
+        addChat(sendRequest);
+      }
     }
   };
   function decodeUnicode(str: string) {
@@ -137,7 +164,7 @@ export const Chat = ({ ...props }: ChatProps) => {
               const getAvatar = () => {
                 switch (emitter) {
                   case "gpt":
-                    return gptAvatar;
+                    return robot;
                   case "error":
                     return warning;
                   default:
@@ -185,26 +212,43 @@ export const Chat = ({ ...props }: ChatProps) => {
         overflow="hidden"
       >
         <Stack maxWidth="768px" width={"100%"}>
-          <Input
-            autoFocus={true}
-            size={"lg"}
-            variant="filled"
-            inputRightAddon={
-              <IconButton
-                aria-label="send_button"
-                icon={!isLoading ? <FiSend /> : <Spinner />}
-                backgroundColor="transparent"
-                onClick={handleSubmit(handleAsk)}
-              />
-            }
-            {...register("input")}
-            onSubmit={console.log}
-            onKeyDown={(e) => {
-              if (e.key == "Enter") {
-                handleAsk({ input: e.currentTarget.value });
+          <Stack flexDirection={"row"}>
+            <Input
+              autoFocus={true}
+              size={"lg"}
+              variant="filled"
+              inputRightAddon={
+                <IconButton
+                  aria-label="send_button"
+                  icon={!isLoading ? <FiSend /> : <Spinner />}
+                  backgroundColor="transparent"
+                  onClick={handleSubmit(handleAsk)}
+                ></IconButton>
               }
-            }}
-          />
+              {...register("input")}
+              onSubmit={console.log}
+              onKeyDown={(e) => {
+                if (e.key == "Enter") {
+                  handleAsk({ input: e.currentTarget.value });
+                }
+              }}
+            />
+            <Button
+              leftIcon={<FiMail size={32} />}
+              borderWidth={1}
+              borderColor="whiteAlpha.400"
+              rounded={4}
+              minHeight={"100%"}
+              padding={2}
+              justifyContent="flex-start"
+              transition="all ease .5s"
+              backgroundColor="transparent"
+              _hover={{
+                backgroundColor: "whiteAlpha.100",
+              }}
+            ></Button>
+          </Stack>
+
           <Text textAlign="center" fontSize="sm" opacity={0.5}>
             GenIA powered by BBVA Perú
           </Text>

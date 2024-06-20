@@ -44,6 +44,10 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
     handleOpen = () => setIsOpen(true),
     handleClose = () => setIsOpen(false);
 
+  const [sessionId, setsessionId] = useState(
+    sessionStorage.getItem("sessionId")
+  );
+
   const [listRef] = useAutoAnimate();
 
   const { toggleColorMode, colorMode } = useColorMode();
@@ -65,6 +69,15 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
   useEffect(() => {
     store.session("@chat", JSON.stringify(chat));
   }, [chat, selectedChat]);
+
+  useEffect(() => {
+    if (!sessionId) {
+      console.log("sessionId", sessionId);
+      const d = new Date();
+      let ms = d.valueOf();
+      store.session("sessionId", ms);
+    }
+  }, []);
 
   const responsiveProps = isResponsive
     ? {
@@ -156,7 +169,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
             backgroundColor: "whiteAlpha.100",
           }}
         >
-          New chat
+          Nueva conversación
         </Button>
         <Stack height="full" overflowY="auto" ref={listRef}>
           {chat?.map(({ id, role }) => {
@@ -197,13 +210,15 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
             leftIcon={<FiTrash2 />}
             justifyContent="flex-start"
             padding={2}
-            onClick={clearAll}
+            onClick={() => {
+              clearAll();
+            }}
             backgroundColor="transparent"
             _hover={{
               backgroundColor: "blackAlpha.300",
             }}
           >
-            Clear conversations
+            Borrar conversaciones
           </Button>
           <Button
             justifyContent="flex-start"
@@ -215,40 +230,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
               backgroundColor: "blackAlpha.300",
             }}
           >
-            {colorMode == "dark" ? "Light mode" : "Dark mode"}
-          </Button>
-          <Button
-            leftIcon={<FiExternalLink />}
-            justifyContent="flex-start"
-            padding={2}
-            backgroundColor="transparent"
-            _hover={{
-              backgroundColor: "blackAlpha.300",
-            }}
-          >
-            FAQ
-          </Button>
-          <Button
-            leftIcon={<FiUsers />}
-            justifyContent="flex-start"
-            padding={2}
-            backgroundColor="transparent"
-            _hover={{
-              backgroundColor: "blackAlpha.300",
-            }}
-          >
-            Contacto
-          </Button>
-          <Button
-            leftIcon={<FiLogOut />}
-            justifyContent="flex-start"
-            padding={2}
-            backgroundColor="transparent"
-            _hover={{
-              backgroundColor: "blackAlpha.300",
-            }}
-          >
-            Log Out
+            {colorMode == "dark" ? "Modo Claro" : "Modo Oscuro"}
           </Button>
         </Stack>
       </Stack>
