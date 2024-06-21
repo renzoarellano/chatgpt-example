@@ -72,11 +72,10 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
 
   useEffect(() => {
     if (!sessionId) {
-      console.log("sessionId", sessionId);
       const d = new Date();
       let ms = d.valueOf();
       store.session("sessionId", ms);
-    }
+    } 
   }, []);
 
   const responsiveProps = isResponsive

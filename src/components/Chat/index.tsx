@@ -63,8 +63,8 @@ export const Chat = ({ ...props }: ChatProps) => {
           const response = await fetch(api, {
             method: "post",
             body: `{ "inputText": "${prompt}",
-           "sessionId": '${sessionStorage.getItem("sessionId")}',
-          "queryType": '${selectedChat.query}'}`,
+           "sessionId": "${sessionStorage.getItem("sessionId")}",
+          "queryType": "${selectedChat.query}"}`,
           });
           const data = await response.json();
           return data;
@@ -92,7 +92,7 @@ export const Chat = ({ ...props }: ChatProps) => {
             const message = String(body);
             addMessage(selectedId, {
               emitter: "gpt",
-              message,
+              message
             });
 
             if (
