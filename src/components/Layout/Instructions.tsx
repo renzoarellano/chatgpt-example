@@ -29,7 +29,7 @@ export const Instructions = ({ onClick }: IInstructionsProps) => {
       icon: FiZap,
       name: "Refinar",
       list: [
-        "La idea de mi proyecto es la siguiente..",
+        "La idea de mi proyecto es la siguiente,",
         "Quiero implementar tarjeta biométrica en el banco, ¿qué consideraciones debo tener en cuenta?",
       ],
     },

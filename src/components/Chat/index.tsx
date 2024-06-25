@@ -33,6 +33,7 @@ interface ChatSchema {
 
 export const Chat = ({ ...props }: ChatProps) => {
   const { api } = useAPI();
+  console.log("Probando consola")
   const {
     selectedChat,
     addMessage,
@@ -45,7 +46,7 @@ export const Chat = ({ ...props }: ChatProps) => {
     selectedRole = selectedChat?.role;
 
   const hasSelectedChat = selectedChat && selectedChat?.content.length > 0;
-
+  console.log("hasSelectedChat",hasSelectedChat)
   const { register, setValue, handleSubmit } = useForm<ChatSchema>();
 
   const overflowRef = useRef<HTMLDivElement>(null);
@@ -59,6 +60,7 @@ export const Chat = ({ ...props }: ChatProps) => {
     mutationKey: "prompt",
     mutationFn: async (prompt: string) => {
       try {
+        console.log("mutateQuery",selectedChat)
         if (api) {
           const response = await fetch(api, {
             method: "post",
@@ -80,16 +82,17 @@ export const Chat = ({ ...props }: ChatProps) => {
     updateScroll();
     const sendRequest = (selectedId: string) => {
       setValue("input", "");
-
+      console.log("prompt", prompt)
       addMessage(selectedId, {
         emitter: "user",
         message: prompt,
       });
 
       mutate(prompt, {
-        onSuccess({ statusCode, body }, variable) {
-          if (statusCode === 200) {
-            const message = String(body);
+        onSuccess(data, variable) {
+          if (data) {
+            console.log("body",data)
+            const message = String(data?.responseText || "" );
             addMessage(selectedId, {
               emitter: "gpt",
               message
@@ -199,7 +202,11 @@ export const Chat = ({ ...props }: ChatProps) => {
               );
             })
           ) : (
-            <Instructions onClick={(text) => setValue("input", text)} />
+            hasSelectedChat === undefined ? <div>
+              <div>
+                <h1>Para iniciar un chat, clic en una nueva conversación</h1>
+              </div>
+            </div> : <Instructions onClick={(text) => setValue("input", text)} />
           )}
         </Stack>
       </Stack>
@@ -234,17 +241,18 @@ export const Chat = ({ ...props }: ChatProps) => {
               }}
             />
             <Button
-              leftIcon={<FiMail size={32} />}
+              leftIcon={<FiMail size={18} />}
               borderWidth={1}
               borderColor="whiteAlpha.400"
               rounded={4}
               minHeight={"100%"}
-              padding={2}
+              padding={1}
               justifyContent="flex-start"
               transition="all ease .5s"
               backgroundColor="transparent"
               _hover={{
                 backgroundColor: "whiteAlpha.100",
+                
               }}
             ></Button>
           </Stack>
