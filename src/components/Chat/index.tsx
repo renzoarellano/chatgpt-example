@@ -3,11 +3,19 @@ import gptAvatar from "@/assets/gpt-avatar.svg";
 import robot from "@/assets/robot.png";
 import warning from "@/assets/warning.svg";
 import user from "@/assets/user.png";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useChat } from "@/store/chat";
 import { useForm } from "react-hook-form";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useMutation } from "react-query";
+
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Heading
+} from '@chakra-ui/react'
 
 //Components
 import { Input } from "@/components/Input";
@@ -32,8 +40,7 @@ interface ChatSchema {
 }
 
 export const Chat = ({ ...props }: ChatProps) => {
-  const { api } = useAPI();
-  console.log("Probando consola")
+  const { api, apiEmail } = useAPI();
   const {
     selectedChat,
     addMessage,
@@ -45,8 +52,22 @@ export const Chat = ({ ...props }: ChatProps) => {
   const selectedId = selectedChat?.id,
     selectedRole = selectedChat?.role;
 
+  const [activateMailNotification, setActivateMailNotification] = useState(false)
+  useEffect(() => {
+      const setTimer = setTimeout(() => {
+        if(activateMailNotification){
+          setActivateMailNotification(false)
+        }
+      }, 2000);
+    
+    return () => {
+      clearTimeout(setTimer)
+     
+    }
+  }, [activateMailNotification])
+  
+
   const hasSelectedChat = selectedChat && selectedChat?.content.length > 0;
-  console.log("hasSelectedChat",hasSelectedChat)
   const { register, setValue, handleSubmit } = useForm<ChatSchema>();
 
   const overflowRef = useRef<HTMLDivElement>(null);
@@ -77,6 +98,29 @@ export const Chat = ({ ...props }: ChatProps) => {
       }
     },
   });
+
+  const sendEmailToClient = async () => {
+    try {
+      if(apiEmail){
+        const response = await fetch(apiEmail, {
+          method: "post",
+          body: `{ 
+         "sessionId": "${sessionStorage.getItem("sessionId")}"
+        }`,
+        });
+        const data = await response.json();
+        console.log(data)
+        if(data?.response?.$metadata?.httpStatusCode == 200){
+          setActivateMailNotification(true)
+
+        }
+        return data;
+      }
+    } catch (error) {
+      console.log('Email Error', error)
+    }
+  }
+
 
   const handleAsk = async ({ input: prompt }: ChatSchema) => {
     updateScroll();
@@ -182,7 +226,7 @@ export const Chat = ({ ...props }: ChatProps) => {
                   padding={4}
                   rounded={8}
                   backgroundColor={
-                    emitter == "gpt" ? "blackAlpha.200" : "transparent"
+                    emitter == "gpt" ? "cyan.50" : "transparent"
                   }
                   spacing={4}
                 >
@@ -203,17 +247,36 @@ export const Chat = ({ ...props }: ChatProps) => {
             })
           ) : (
             hasSelectedChat === undefined ? <div>
-              <div>
-                <h1>Para iniciar un chat, clic en una nueva conversación</h1>
-              </div>
+              <Stack justifyContent="center"
+      alignItems="center"
+      height="full"
+      display={"flex"}
+      >
+              <Heading size="2xl" marginY={8}>
+        GenIA
+      </Heading>
+      <Heading as='h3' size='xl'>Hoy es un buen día para refinar</Heading>
+              </Stack>
             </div> : <Instructions onClick={(text) => setValue("input", text)} />
           )}
         </Stack>
       </Stack>
       <Stack
+      transition="all ease .5s"
+        >
+              {
+                activateMailNotification ? <Alert status='success'  display={"inline-flex"} justifyContent="center"
+                alignItems="center">
+                <AlertIcon />
+                <AlertTitle>Email enviado con éxito!</AlertTitle>
+                <AlertDescription>Revise su bandeja de entrada</AlertDescription>
+              </Alert> : <></>
+              }
+          </Stack>
+      <Stack
         height="20%"
         padding={4}
-        backgroundColor="blackAlpha.400"
+        backgroundColor="gray.400"
         justifyContent="center"
         alignItems="center"
         overflow="hidden"
@@ -222,6 +285,7 @@ export const Chat = ({ ...props }: ChatProps) => {
           <Stack flexDirection={"row"}>
             <Input
               autoFocus={true}
+              _focus={{background:"white", textColor:"black"}}
               size={"lg"}
               variant="filled"
               inputRightAddon={
@@ -241,18 +305,16 @@ export const Chat = ({ ...props }: ChatProps) => {
               }}
             />
             <Button
-              leftIcon={<FiMail size={18} />}
-              borderWidth={1}
+              
+              leftIcon={<FiMail size={17} />}
               borderColor="whiteAlpha.400"
               rounded={4}
-              minHeight={"100%"}
-              padding={1}
+              height={"48px"}
+              marginLeft={"5px !important"}
               justifyContent="flex-start"
               transition="all ease .5s"
-              backgroundColor="transparent"
-              _hover={{
-                backgroundColor: "whiteAlpha.100",
-                
+              onClick={() => {
+                sendEmailToClient()
               }}
             ></Button>
           </Stack>

@@ -187,7 +187,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
                 }
                 onClick={() => setSelectedChat({ id })}
                 _hover={{
-                  backgroundColor: "whiteAlpha.100",
+                  backgroundColor: "blue.300",
                 }}
               >
                 <Text>{gettingChatName(role)}</Text>
@@ -214,7 +214,7 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
             }}
             backgroundColor="transparent"
             _hover={{
-              backgroundColor: "blackAlpha.300",
+              backgroundColor: "blue.300",
             }}
           >
             Borrar conversaciones
@@ -222,11 +222,11 @@ export const Sidebar = ({ isResponsive, ...props }: SideBarProps) => {
           <Button
             justifyContent="flex-start"
             padding={2}
-            onClick={toggleColorMode}
+            
             backgroundColor="transparent"
             leftIcon={colorMode == "dark" ? <FiSun /> : <FiMoon />}
             _hover={{
-              backgroundColor: "blackAlpha.300",
+              backgroundColor: "blue.300",
             }}
           >
             {colorMode == "dark" ? "Modo Claro" : "Modo Oscuro"}
